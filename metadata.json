@@ -1,0 +1,5 @@
+{
+  "name": "Big5 Converter",
+  "description": "A tool to convert Traditional Chinese characters to Big5 hex codes using a specific mapping table.",
+  "requestFramePermissions": []
+}
