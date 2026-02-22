@@ -4,7 +4,7 @@
  */
 
 import { useState, useMemo } from 'react';
-import { Copy, Trash2, Loader2 } from 'lucide-react';
+import { Copy, Trash2, Tag } from 'lucide-react';
 import { motion } from 'motion/react';
 import { BIG5_DATA, BIG5_COUNT } from './big5-data';
 
@@ -30,16 +30,23 @@ const MAPPING = buildMapping();
 export default function App() {
   const [input, setInput] = useState('');
   const [copied, setCopied] = useState(false);
+  const [showAnnotation, setShowAnnotation] = useState(false);
 
   const output = useMemo(() => {
     if (!input) return '';
-    const result: string[] = [];
-    for (const char of input) {
-      const big5 = MAPPING.get(char);
-      result.push(big5 ?? '????');
-    }
-    return result.join('★');
-  }, [input]);
+    // Split by newlines to preserve line structure
+    const lines = input.split('\n');
+    const outputLines = lines.map(line => {
+      const result: string[] = [];
+      for (const char of line) {
+        const big5 = MAPPING.get(char);
+        const code = big5 ?? '????';
+        result.push(showAnnotation ? `${code}(${char})` : code);
+      }
+      return result.join('★');
+    });
+    return outputLines.join('\n');
+  }, [input, showAnnotation]);
 
   const handleCopy = () => {
     if (!output) return;
@@ -104,12 +111,26 @@ export default function App() {
             transition={{ delay: 0.1 }}
             className="flex flex-col space-y-2"
           >
-            <label
-              htmlFor="output"
-              className="text-sm font-medium text-stone-600 uppercase tracking-wider ml-1"
-            >
-              Output (Big5 Hex)
-            </label>
+            <div className="flex items-center justify-between ml-1">
+              <label
+                htmlFor="output"
+                className="text-sm font-medium text-stone-600 uppercase tracking-wider"
+              >
+                Output (Big5 Hex)
+              </label>
+              <button
+                onClick={() => setShowAnnotation(v => !v)}
+                title="顯示/隱藏中文註記"
+                className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-medium border transition-all ${
+                  showAnnotation
+                    ? 'bg-stone-800 text-white border-stone-800'
+                    : 'bg-white text-stone-500 border-stone-200 hover:border-stone-400'
+                }`}
+              >
+                <Tag className="w-3 h-3" />
+                {showAnnotation ? '隱藏註記' : '顯示中文'}
+              </button>
+            </div>
             <div className="relative group">
               <textarea
                 id="output"
