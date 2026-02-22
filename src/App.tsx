@@ -31,51 +31,56 @@ interface CodeEntry {
   char: string; // original Chinese character
 }
 
-// Layout for "ACDA":
+// 正確的方塊字排列（以 C140 為例）：
 //
-//  ┌──────┬──────┐
-//  │      │  C   │  ← code[1], 右上，上下壓縮（高度 = 拉長A 的一半）
-//  │  A   │──────│  ← code[0], 左欄 grid-row span 2（拉長，全高）
-//  │  ᵃ   │  D   │  ← code[3] 小字 + code[2]，右下
-//  └──────┴──────┘
+//  ┌──────┬──────┬──────┐
+//  │      │  1   │      │  ← code[1]，中欄上半，壓縮
+//  │  C   │──────│  0   │  ← code[0] 左欄全高，code[3] 右欄全高（上下拉長）
+//  │      │  4   │      │  ← code[2]，中欄下半，壓縮
+//  └──────┴──────┴──────┘
 //
-// C+D 疊起來高度 = code[0] 的高度（兩者皆為全欄高）
+// code[0], code[3] = 左右兩側，上下拉長（全欄高）
+// code[1], code[2] = 中間上下，上下壓縮（各半欄高）
+// code[1] 在 code[2] 上面 ✓
+// CD 疊起來高度 = 拉長的 A 高度（都是完整欄高）✓
 function CodeBlock({ code, char, showAnnotation }: CodeEntry & { showAnnotation: boolean }) {
   return (
     <div className="flex flex-col items-center gap-1">
       <div
-        className="border border-stone-400 font-mono rounded overflow-hidden"
+        className="border border-stone-400 font-mono rounded overflow-hidden bg-stone-50"
         style={{
           display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
+          gridTemplateColumns: '1fr 0.65fr 1fr',
           gridTemplateRows: '1fr 1fr',
-          width: '2.75rem',
+          width: '3.25rem',
           height: '2.75rem',
         }}
       >
-        {/* 左欄：code[0]（大字）+ code[3]（小字），span 2 rows = "上下拉長" */}
-        <div
-          style={{ gridRow: '1 / span 2' }}
-          className="flex flex-col items-center justify-center border-r border-stone-400 bg-stone-100 gap-0.5"
-        >
-          <span className="text-sm font-bold text-stone-800 leading-none">
-            {code[0]}
-          </span>
-          <span className="text-stone-400 leading-none" style={{ fontSize: '0.42rem' }}>
-            {code[3]}
-          </span>
-        </div>
-        {/* 右上：code[1] = C，"上壓縮" */}
+        {/* 左欄：code[0]，span 2 rows = "上下拉長" */}
         <span
+          style={{ gridColumn: 1, gridRow: '1 / span 2' }}
+          className="flex items-center justify-center border-r border-stone-400 bg-stone-100 text-stone-800 font-bold text-sm leading-none"
+        >
+          {code[0]}
+        </span>
+        {/* 中欄上：code[1]，"上壓縮" */}
+        <span
+          style={{ gridColumn: 2, gridRow: 1, fontSize: '0.6rem' }}
           className="flex items-center justify-center border-b border-stone-300 text-stone-600 leading-none"
-          style={{ fontSize: '0.62rem' }}
         >
           {code[1]}
         </span>
-        {/* 右下：code[2] = D，"下壓縮"，C 在 D 上面 ✓ */}
+        {/* 右欄：code[3]，span 2 rows = "上下拉長" */}
         <span
+          style={{ gridColumn: 3, gridRow: '1 / span 2' }}
+          className="flex items-center justify-center border-l border-stone-400 bg-stone-100 text-stone-800 font-bold text-sm leading-none"
+        >
+          {code[3]}
+        </span>
+        {/* 中欄下：code[2]，"下壓縮"，code[1] 在 code[2] 上面 ✓ */}
+        <span
+          style={{ gridColumn: 2, gridRow: 2, fontSize: '0.6rem' }}
           className="flex items-center justify-center text-stone-600 leading-none"
-          style={{ fontSize: '0.62rem' }}
         >
           {code[2]}
         </span>
