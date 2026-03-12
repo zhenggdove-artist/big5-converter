@@ -50,56 +50,54 @@ function CodeBlock({ code, char, showAnnotation }: CodeEntry & { showAnnotation:
   return (
     <div className="flex flex-col items-center gap-1">
       <div
-        className="border border-stone-400 font-mono rounded overflow-hidden bg-stone-50"
+        className="border border-indigo-500/40 font-mono rounded overflow-hidden"
         style={{
           display: 'grid',
           gridTemplateColumns: '1fr 0.65fr 1fr',
           gridTemplateRows: '1fr 1fr',
           width: '3.25rem',
           height: '2.75rem',
+          background: 'rgba(20, 15, 50, 0.7)',
+          boxShadow: '0 0 8px rgba(100, 70, 200, 0.15), inset 0 0 6px rgba(80, 60, 180, 0.1)',
         }}
       >
-        {/* 左欄：code[0]，span 2 rows = "上下拉長" */}
+        {/* 左欄：code[0]，span 2 rows */}
         <span
           style={{ gridColumn: '1', gridRow: '1 / span 2' }}
-          className="flex items-center justify-center border-r border-stone-400 bg-stone-100 text-stone-800 font-bold text-sm leading-none"
+          className="flex items-center justify-center border-r border-indigo-500/30 text-indigo-300 font-bold text-sm leading-none"
         >
           {code[0]}
         </span>
-        {/* 中欄上：code[1]，"上壓縮" */}
+        {/* 中欄上：code[1] */}
         <span
           style={{ gridColumn: '2', gridRow: '1', fontSize: '0.6rem' }}
-          className="flex items-center justify-center border-b border-stone-300 text-stone-600 leading-none"
+          className="flex items-center justify-center border-b border-indigo-500/20 text-purple-400/80 leading-none"
         >
           {code[1]}
         </span>
-        {/* 右欄：code[3]，span 2 rows = "上下拉長" */}
+        {/* 右欄：code[3]，span 2 rows */}
         <span
           style={{ gridColumn: '3', gridRow: '1 / span 2' }}
-          className="flex items-center justify-center border-l border-stone-400 bg-stone-100 text-stone-800 font-bold text-sm leading-none"
+          className="flex items-center justify-center border-l border-indigo-500/30 text-indigo-300 font-bold text-sm leading-none"
         >
           {code[3]}
         </span>
-        {/* 中欄下：code[2]，"下壓縮"，code[1] 在 code[2] 上面 ✓ */}
+        {/* 中欄下：code[2] */}
         <span
           style={{ gridColumn: '2', gridRow: '2', fontSize: '0.6rem' }}
-          className="flex items-center justify-center text-stone-600 leading-none"
+          className="flex items-center justify-center text-purple-400/80 leading-none"
         >
           {code[2]}
         </span>
       </div>
       {showAnnotation && (
-        <span className="text-xs text-stone-500 leading-none">{char}</span>
+        <span className="text-xs text-purple-400/70 leading-none">{char}</span>
       )}
     </div>
   );
 }
 
 // ─── 反向查找元件 ─────────────────────────────────────────────────────────────
-//
-// 可輸入的方塊字格，輸入 Big5 hex code 反查中文字
-// Tab / 自動跳格順序：cells[0]（左）→ cells[1]（中上）→ cells[2]（中下）→ cells[3]（右）
-//
 function ReverseLookup() {
   const [cells, setCells] = useState<string[]>(['', '', '', '']);
   const refs = [
@@ -114,7 +112,6 @@ function ReverseLookup() {
   const resultChar = isComplete ? REVERSE_MAPPING.get(code) : undefined;
 
   const handleChange = (idx: number, raw: string) => {
-    // 只取最後一個合法 hex 字元
     const hex = raw.replace(/[^0-9A-Fa-f]/g, '').toUpperCase().slice(-1);
     const next = [...cells];
     next[idx] = hex;
@@ -146,11 +143,10 @@ function ReverseLookup() {
     refs[0].current?.focus();
   };
 
-  // 共用 input class
   const baseClass =
     'w-full h-full bg-transparent text-center font-mono font-bold uppercase ' +
-    'outline-none placeholder-stone-300 transition-colors ' +
-    'focus:bg-amber-50';
+    'outline-none transition-colors ' +
+    'focus:bg-indigo-900/30 placeholder-indigo-700/40';
 
   return (
     <div className="flex flex-col items-center gap-6">
@@ -158,16 +154,16 @@ function ReverseLookup() {
 
         {/* 可輸入方塊字格 */}
         <div
-          className="border-2 border-stone-400 rounded-lg overflow-hidden shadow-sm"
+          className="border-2 border-indigo-500/40 rounded-lg overflow-hidden vhs-glow-box"
           style={{
             display: 'grid',
             gridTemplateColumns: '1fr 0.65fr 1fr',
             gridTemplateRows: '1fr 1fr',
             width: '5.5rem',
             height: '4.75rem',
+            background: 'rgba(15, 10, 40, 0.8)',
           }}
         >
-          {/* cells[0] → 左欄，全高 */}
           <input
             ref={refs[0]}
             value={cells[0]}
@@ -176,9 +172,8 @@ function ReverseLookup() {
             maxLength={2}
             placeholder="·"
             style={{ gridColumn: '1', gridRow: '1 / span 2', fontSize: '1.1rem' }}
-            className={`${baseClass} border-r-2 border-stone-400 bg-stone-100 text-stone-800`}
+            className={`${baseClass} border-r-2 border-indigo-500/30 text-indigo-300`}
           />
-          {/* cells[1] → 中欄上 */}
           <input
             ref={refs[1]}
             value={cells[1]}
@@ -187,9 +182,8 @@ function ReverseLookup() {
             maxLength={2}
             placeholder="·"
             style={{ gridColumn: '2', gridRow: '1', fontSize: '0.7rem' }}
-            className={`${baseClass} border-b border-stone-300 text-stone-700`}
+            className={`${baseClass} border-b border-indigo-500/20 text-purple-400`}
           />
-          {/* cells[2] → 中欄下 */}
           <input
             ref={refs[2]}
             value={cells[2]}
@@ -198,9 +192,8 @@ function ReverseLookup() {
             maxLength={2}
             placeholder="·"
             style={{ gridColumn: '2', gridRow: '2', fontSize: '0.7rem' }}
-            className={`${baseClass} text-stone-700`}
+            className={`${baseClass} text-purple-400`}
           />
-          {/* cells[3] → 右欄，全高 */}
           <input
             ref={refs[3]}
             value={cells[3]}
@@ -209,34 +202,41 @@ function ReverseLookup() {
             maxLength={2}
             placeholder="·"
             style={{ gridColumn: '3', gridRow: '1 / span 2', fontSize: '1.1rem' }}
-            className={`${baseClass} border-l-2 border-stone-400 bg-stone-100 text-stone-800`}
+            className={`${baseClass} border-l-2 border-indigo-500/30 text-indigo-300`}
           />
         </div>
 
         {/* 箭頭 */}
-        <span className="text-stone-300 text-2xl select-none">→</span>
+        <span className="text-indigo-500/60 text-2xl select-none vhs-glow">→</span>
 
         {/* 查找結果 */}
         <div className="flex flex-col items-center gap-2">
           <div
             className={`w-20 h-20 border-2 rounded-xl flex items-center justify-center transition-all ${
               isComplete && resultChar
-                ? 'border-stone-400 bg-white shadow-sm'
+                ? 'border-indigo-500/50 vhs-glow-box'
                 : isComplete
-                ? 'border-red-200 bg-red-50'
-                : 'border-stone-200 bg-stone-50'
+                ? 'border-red-500/30 bg-red-900/20'
+                : 'border-indigo-500/20'
             }`}
+            style={{
+              background: isComplete && resultChar
+                ? 'rgba(20, 15, 50, 0.8)'
+                : isComplete
+                ? undefined
+                : 'rgba(15, 10, 35, 0.5)',
+            }}
           >
             {isComplete && resultChar ? (
-              <span className="text-4xl text-stone-800 leading-none">{resultChar}</span>
+              <span className="text-4xl text-indigo-200 leading-none vhs-glow">{resultChar}</span>
             ) : isComplete ? (
-              <span className="text-sm text-red-400 text-center px-1">查無此碼</span>
+              <span className="text-sm text-red-400/80 text-center px-1">查無此碼</span>
             ) : (
-              <span className="text-4xl text-stone-200 select-none">?</span>
+              <span className="text-4xl text-indigo-800/40 select-none">?</span>
             )}
           </div>
           {isComplete && resultChar && (
-            <span className="text-xs font-mono text-stone-400 tracking-widest">{code}</span>
+            <span className="text-xs font-mono text-indigo-500/60 tracking-widest">{code}</span>
           )}
         </div>
       </div>
@@ -245,7 +245,7 @@ function ReverseLookup() {
       {cells.some(c => c) && (
         <button
           onClick={handleClear}
-          className="flex items-center gap-1.5 text-xs text-stone-400 hover:text-stone-600 transition-colors"
+          className="flex items-center gap-1.5 text-xs text-indigo-500/50 hover:text-indigo-400 transition-colors"
         >
           <Trash2 className="w-3 h-3" />
           清除
@@ -294,15 +294,15 @@ export default function App() {
   const handleClear = () => setInput('');
 
   return (
-    <div className="min-h-screen bg-stone-50 text-stone-900 font-sans p-4 md:p-8">
+    <div className="min-h-screen text-indigo-200 font-sans p-4 md:p-8">
       <div className="max-w-4xl mx-auto">
 
         {/* 標題 */}
         <header className="mb-8 text-center">
-          <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-stone-800 mb-2">
+          <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-indigo-200 mb-2 vhs-chroma">
             Big5 Converter
           </h1>
-          <p className="text-stone-500">
+          <p className="text-indigo-400/60">
             Convert Traditional Chinese characters to Big5 hex codes.
           </p>
         </header>
@@ -318,7 +318,7 @@ export default function App() {
           >
             <label
               htmlFor="input"
-              className="text-sm font-medium text-stone-600 uppercase tracking-wider ml-1"
+              className="text-sm font-medium text-indigo-400/70 uppercase tracking-wider ml-1"
             >
               Input (Traditional Chinese)
             </label>
@@ -327,13 +327,14 @@ export default function App() {
                 id="input"
                 value={input}
                 onChange={e => setInput(e.target.value)}
-                className="w-full h-64 p-4 bg-white rounded-2xl border border-stone-200 focus:border-stone-400 focus:ring-0 resize-none shadow-sm transition-all text-lg leading-relaxed"
+                className="w-full h-64 p-4 rounded-2xl border border-indigo-500/30 focus:border-indigo-400/60 focus:ring-0 resize-none transition-all text-lg leading-relaxed text-indigo-100 placeholder-indigo-700/40 vhs-glow-box"
+                style={{ background: 'rgba(12, 8, 32, 0.7)' }}
                 placeholder="Paste your text here..."
               />
               {input && (
                 <button
                   onClick={handleClear}
-                  className="absolute top-3 right-3 p-2 bg-stone-100 hover:bg-stone-200 rounded-lg text-stone-500 transition-colors"
+                  className="absolute top-3 right-3 p-2 bg-indigo-900/50 hover:bg-indigo-800/50 rounded-lg text-indigo-400/70 transition-colors"
                   title="Clear input"
                 >
                   <Trash2 className="w-4 h-4" />
@@ -352,7 +353,7 @@ export default function App() {
             <div className="flex items-center justify-between ml-1">
               <label
                 htmlFor="output"
-                className="text-sm font-medium text-stone-600 uppercase tracking-wider"
+                className="text-sm font-medium text-indigo-400/70 uppercase tracking-wider"
               >
                 Output (Big5 Hex)
               </label>
@@ -362,9 +363,10 @@ export default function App() {
                   title="方塊字顯示模式"
                   className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-medium border transition-all ${
                     blockMode
-                      ? 'bg-stone-800 text-white border-stone-800'
-                      : 'bg-white text-stone-500 border-stone-200 hover:border-stone-400'
+                      ? 'bg-indigo-600/60 text-indigo-100 border-indigo-500/50'
+                      : 'text-indigo-500/60 border-indigo-500/30 hover:border-indigo-400/50'
                   }`}
+                  style={!blockMode ? { background: 'rgba(12, 8, 32, 0.5)' } : undefined}
                 >
                   <LayoutGrid className="w-3 h-3" />
                   方塊字
@@ -374,9 +376,10 @@ export default function App() {
                   title="顯示/隱藏中文註記"
                   className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-medium border transition-all ${
                     showAnnotation
-                      ? 'bg-stone-800 text-white border-stone-800'
-                      : 'bg-white text-stone-500 border-stone-200 hover:border-stone-400'
+                      ? 'bg-indigo-600/60 text-indigo-100 border-indigo-500/50'
+                      : 'text-indigo-500/60 border-indigo-500/30 hover:border-indigo-400/50'
                   }`}
+                  style={!showAnnotation ? { background: 'rgba(12, 8, 32, 0.5)' } : undefined}
                 >
                   <Tag className="w-3 h-3" />
                   {showAnnotation ? '隱藏註記' : '顯示中文'}
@@ -386,9 +389,12 @@ export default function App() {
 
             <div className="relative group">
               {blockMode ? (
-                <div className="w-full h-64 p-4 bg-stone-100 rounded-2xl border border-stone-200 shadow-inner overflow-auto">
+                <div
+                  className="w-full h-64 p-4 rounded-2xl border border-indigo-500/30 shadow-inner overflow-auto vhs-glow-box"
+                  style={{ background: 'rgba(8, 5, 25, 0.7)' }}
+                >
                   {codeLines.length === 0 ? (
-                    <p className="text-stone-400 text-sm">Result will appear here...</p>
+                    <p className="text-indigo-700/50 text-sm">Result will appear here...</p>
                   ) : (
                     codeLines.map((line, li) => (
                       <div key={li} className="flex flex-wrap gap-2 mb-3 last:mb-0">
@@ -404,7 +410,8 @@ export default function App() {
                   id="output"
                   value={textOutput}
                   readOnly
-                  className="w-full h-64 p-4 bg-stone-100 rounded-2xl border border-stone-200 focus:border-stone-400 focus:ring-0 resize-none shadow-inner font-mono text-sm leading-relaxed text-stone-600"
+                  className="w-full h-64 p-4 rounded-2xl border border-indigo-500/30 focus:border-indigo-400/60 focus:ring-0 resize-none shadow-inner font-mono text-sm leading-relaxed text-indigo-300/80 placeholder-indigo-700/40 vhs-glow-box"
+                  style={{ background: 'rgba(8, 5, 25, 0.7)' }}
                   placeholder="Result will appear here..."
                 />
               )}
@@ -412,11 +419,12 @@ export default function App() {
               {textOutput && (
                 <button
                   onClick={handleCopy}
-                  className="absolute top-3 right-3 p-2 bg-white hover:bg-stone-50 rounded-lg text-stone-500 shadow-sm border border-stone-200 transition-all flex items-center gap-2"
+                  className="absolute top-3 right-3 p-2 rounded-lg text-indigo-400/70 border border-indigo-500/30 transition-all flex items-center gap-2 hover:bg-indigo-800/30"
+                  style={{ background: 'rgba(15, 10, 40, 0.8)' }}
                   title="Copy to clipboard"
                 >
                   {copied ? (
-                    <span className="text-xs font-medium text-green-600">Copied!</span>
+                    <span className="text-xs font-medium text-emerald-400">Copied!</span>
                   ) : (
                     <Copy className="w-4 h-4" />
                   )}
@@ -431,9 +439,9 @@ export default function App() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.25 }}
-          className="mt-10 border-t border-stone-200 pt-8"
+          className="mt-10 border-t border-indigo-500/20 pt-8"
         >
-          <h2 className="text-center text-sm font-medium text-stone-500 uppercase tracking-wider mb-6 flex items-center justify-center gap-2">
+          <h2 className="text-center text-sm font-medium text-indigo-400/60 uppercase tracking-wider mb-6 flex items-center justify-center gap-2">
             <Search className="w-4 h-4" />
             反向查找 Big5 → 中文
           </h2>
@@ -447,9 +455,12 @@ export default function App() {
           transition={{ delay: 0.3 }}
           className="mt-10 text-center"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-stone-100 rounded-full text-xs text-stone-500">
+          <div
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs text-indigo-500/50 border border-indigo-500/15"
+            style={{ background: 'rgba(15, 10, 40, 0.5)' }}
+          >
             <span>Data Source: moztw.org (CP950)</span>
-            <span className="w-1 h-1 bg-stone-300 rounded-full"></span>
+            <span className="w-1 h-1 bg-indigo-600/40 rounded-full"></span>
             <span>{MAPPING.size.toLocaleString()} characters loaded</span>
           </div>
         </motion.div>
