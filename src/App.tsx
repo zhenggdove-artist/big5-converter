@@ -294,16 +294,19 @@ export default function App() {
   const handleClear = () => setInput('');
 
   return (
-    <div className="min-h-screen text-indigo-200 font-sans p-4 md:p-8">
+    <div className="min-h-screen text-indigo-200 font-sans p-4 md:p-8 vhs-glitch-secondary">
       <div className="max-w-4xl mx-auto">
 
         {/* 標題 */}
-        <header className="mb-8 text-center">
-          <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-indigo-200 mb-2 vhs-chroma">
-            Big5 Converter
+        <header className="mb-10 text-center">
+          <h1
+            className="text-4xl md:text-5xl font-bold tracking-tight text-indigo-100 mb-3 vhs-chroma"
+            style={{ letterSpacing: '0.08em' }}
+          >
+            GGdove code
           </h1>
-          <p className="text-indigo-400/60">
-            Convert Traditional Chinese characters to Big5 hex codes.
+          <p className="text-indigo-400/50 text-sm tracking-widest uppercase vhs-glow">
+            Convert Traditional Chinese characters to Big5 hex codes
           </p>
         </header>
 
@@ -456,11 +459,11 @@ export default function App() {
           className="mt-10 text-center"
         >
           <div
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs text-indigo-500/50 border border-indigo-500/15"
-            style={{ background: 'rgba(15, 10, 40, 0.5)' }}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs text-indigo-500/40 border border-indigo-500/10 vhs-timestamp"
+            style={{ background: 'rgba(10, 6, 30, 0.6)' }}
           >
             <span>Data Source: moztw.org (CP950)</span>
-            <span className="w-1 h-1 bg-indigo-600/40 rounded-full"></span>
+            <span className="w-1 h-1 bg-indigo-600/30 rounded-full"></span>
             <span>{MAPPING.size.toLocaleString()} characters loaded</span>
           </div>
         </motion.div>

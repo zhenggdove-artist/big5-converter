@@ -1,8 +1,30 @@
 @import "tailwindcss";
 
-/* ─── VHS Dreamy Filter: Global Overlays ─────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════════════════
+   VHS DREAMY FILTER v2 — Surreal Dream VHS Scene
+   Based on post-processing shader pipeline:
+   1. Color Grading (cold blue/purple monochrome)
+   2. Lighting (low brightness, high black level, strong vignette)
+   3. Texture Overlay (grain, noise, scanlines, VHS artifacts)
+   4. Soft Focus & Blur (radial blur on edges, dreamy depth)
+   5. Glow & Bloom (diffused halation on bright areas)
+   6. Chromatic Aberration (old lens edge distortion)
+   7. Elemental Accent (oversaturated red on accent elements)
+   ═══════════════════════════════════════════════════════════════════════════ */
 
-/* 1. Vignette overlay */
+/* ─── 1. Color Grading: cold blue-purple monochrome ──────────────────────── */
+html {
+  filter:
+    saturate(0.35)
+    sepia(0.15)
+    hue-rotate(220deg)
+    contrast(1.1)
+    brightness(0.78);
+}
+
+/* ─── 2. Lighting: low brightness, deep blacks, strong vignette ──────────── */
+
+/* Heavy vignette overlay — dark edges fading inward */
 body::before {
   content: '';
   position: fixed;
@@ -10,14 +32,17 @@ body::before {
   pointer-events: none;
   z-index: 9998;
   background: radial-gradient(
-    ellipse at center,
-    transparent 40%,
-    rgba(5, 2, 18, 0.55) 75%,
-    rgba(2, 0, 12, 0.85) 100%
+    ellipse 70% 65% at center,
+    transparent 25%,
+    rgba(5, 2, 20, 0.45) 50%,
+    rgba(3, 1, 15, 0.75) 70%,
+    rgba(1, 0, 8, 0.92) 100%
   );
 }
 
-/* 2. Scanlines overlay */
+/* ─── 3. Texture Overlay: scanlines + tracking artifacts ─────────────────── */
+
+/* Scanlines — fine CRT/VHS horizontal lines */
 body::after {
   content: '';
   position: fixed;
@@ -27,19 +52,20 @@ body::after {
   background: repeating-linear-gradient(
     to bottom,
     transparent 0px,
-    transparent 2px,
-    rgba(0, 0, 0, 0.12) 2px,
-    rgba(0, 0, 0, 0.12) 4px
+    transparent 1.5px,
+    rgba(0, 0, 0, 0.15) 1.5px,
+    rgba(0, 0, 0, 0.15) 3px
   );
-  animation: vhs-scanline-drift 8s linear infinite;
+  animation: vhs-scanline-drift 6s linear infinite;
+  mix-blend-mode: multiply;
 }
 
 @keyframes vhs-scanline-drift {
   0% { transform: translateY(0); }
-  100% { transform: translateY(4px); }
+  100% { transform: translateY(3px); }
 }
 
-/* 3. VHS noise / grain overlay on root */
+/* VHS noise / grain — fractal noise texture shifting rapidly */
 #root::after {
   content: '';
   position: fixed;
@@ -48,108 +74,260 @@ body::after {
   height: 200%;
   pointer-events: none;
   z-index: 9997;
-  opacity: 0.06;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 256px 256px;
-  animation: vhs-noise 0.3s steps(3) infinite;
+  opacity: 0.09;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  animation: vhs-noise 0.15s steps(4) infinite;
+  mix-blend-mode: overlay;
 }
 
 @keyframes vhs-noise {
-  0% { transform: translate(0, 0); }
-  33% { transform: translate(-10px, 5px); }
-  66% { transform: translate(7px, -3px); }
-  100% { transform: translate(0, 0); }
+  0%   { transform: translate(0, 0) scale(1.05); }
+  25%  { transform: translate(-12px, 6px) scale(1.02); }
+  50%  { transform: translate(8px, -4px) scale(1.07); }
+  75%  { transform: translate(-5px, 10px) scale(1.03); }
+  100% { transform: translate(0, 0) scale(1.05); }
 }
 
-/* 4. VHS horizontal glitch bar */
+/* VHS horizontal glitch / tracking bar */
 #root::before {
   content: '';
   position: fixed;
   left: 0;
   width: 100%;
-  height: 3px;
+  height: 4px;
   pointer-events: none;
   z-index: 10000;
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(120, 80, 255, 0.3) 20%,
-    rgba(180, 120, 255, 0.5) 50%,
-    rgba(120, 80, 255, 0.3) 80%,
+    rgba(100, 60, 220, 0.25) 15%,
+    rgba(160, 100, 255, 0.55) 40%,
+    rgba(200, 140, 255, 0.6) 50%,
+    rgba(160, 100, 255, 0.55) 60%,
+    rgba(100, 60, 220, 0.25) 85%,
     transparent 100%
   );
-  animation: vhs-glitch-bar 6s ease-in-out infinite;
-  opacity: 0.7;
+  animation: vhs-glitch-bar 5s ease-in-out infinite;
+  opacity: 0.8;
+  filter: blur(0.5px);
 }
 
 @keyframes vhs-glitch-bar {
-  0%, 100% { top: -3px; opacity: 0; }
-  5% { opacity: 0.7; }
-  15% { top: 25%; }
-  30% { top: 60%; opacity: 0.5; }
-  45% { top: 90%; opacity: 0; }
-  46%, 99% { top: -3px; opacity: 0; }
+  0%, 100% { top: -4px; opacity: 0; }
+  3%  { opacity: 0.8; }
+  12% { top: 20%; }
+  25% { top: 55%; opacity: 0.6; }
+  38% { top: 85%; opacity: 0.3; }
+  42% { top: 100%; opacity: 0; }
+  43%, 99% { top: -4px; opacity: 0; }
 }
 
-/* ─── VHS Dreamy: Global body style ──────────────────────────────────────── */
+/* Secondary subtle glitch bar (second pass) */
+.vhs-glitch-secondary::before {
+  content: '';
+  position: fixed;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  pointer-events: none;
+  z-index: 10000;
+  background: rgba(180, 120, 255, 0.3);
+  animation: vhs-glitch-bar2 8s ease-in-out infinite 2.5s;
+}
+
+@keyframes vhs-glitch-bar2 {
+  0%, 100% { top: -2px; opacity: 0; }
+  5%  { opacity: 0.5; }
+  20% { top: 40%; }
+  35% { top: 70%; opacity: 0.2; }
+  40% { top: 100%; opacity: 0; }
+  41%, 99% { top: -2px; opacity: 0; }
+}
+
+/* ─── 4. Body: deep dark gradient with cold tones ────────────────────────── */
 body {
   background: linear-gradient(
-    170deg,
-    #0a0615 0%,
-    #0d0a1f 30%,
-    #110d28 60%,
-    #0a0818 100%
+    160deg,
+    #060412 0%,
+    #0a071c 25%,
+    #0e0a24 50%,
+    #0b0820 75%,
+    #070515 100%
   );
-  color: #b8b0d4;
+  color: #a9a0c8;
+  min-height: 100vh;
 }
 
-/* ─── VHS Glow utility classes ───────────────────────────────────────────── */
+/* ─── 5. Glow & Bloom ────────────────────────────────────────────────────── */
+
+/* Text glow — dreamy diffused halation */
 .vhs-glow {
   text-shadow:
-    0 0 7px rgba(140, 120, 255, 0.5),
-    0 0 20px rgba(100, 80, 200, 0.3),
-    0 0 40px rgba(80, 60, 180, 0.15);
+    0 0 6px rgba(140, 120, 255, 0.6),
+    0 0 15px rgba(110, 80, 220, 0.4),
+    0 0 35px rgba(90, 60, 200, 0.2),
+    0 0 60px rgba(70, 40, 180, 0.1);
 }
 
+/* Box glow — bloom on containers */
 .vhs-glow-box {
   box-shadow:
-    0 0 10px rgba(100, 70, 200, 0.2),
-    0 0 30px rgba(80, 50, 180, 0.1),
-    inset 0 0 15px rgba(100, 70, 200, 0.05);
+    0 0 8px rgba(100, 70, 200, 0.25),
+    0 0 25px rgba(80, 50, 180, 0.12),
+    0 0 50px rgba(60, 30, 160, 0.06),
+    inset 0 0 20px rgba(100, 70, 200, 0.06);
 }
 
-/* Chromatic aberration on headings */
+/* Intense bloom for focused/active elements */
+.vhs-bloom-intense {
+  box-shadow:
+    0 0 12px rgba(120, 80, 240, 0.35),
+    0 0 40px rgba(100, 60, 220, 0.2),
+    0 0 80px rgba(80, 40, 200, 0.1),
+    inset 0 0 25px rgba(120, 80, 240, 0.08);
+}
+
+/* ─── 6. Chromatic Aberration on headings ─────────────────────────────────── */
 .vhs-chroma {
   text-shadow:
-    -1.5px 0 rgba(255, 50, 80, 0.4),
-    1.5px 0 rgba(80, 150, 255, 0.4),
-    0 0 12px rgba(140, 100, 255, 0.5);
+    -2px 0 rgba(255, 40, 70, 0.45),
+    2px 0 rgba(60, 140, 255, 0.45),
+    0 -1px rgba(255, 40, 70, 0.2),
+    0 1px rgba(60, 140, 255, 0.2),
+    0 0 15px rgba(140, 100, 255, 0.6),
+    0 0 40px rgba(100, 60, 200, 0.3);
+  animation: vhs-chroma-flicker 4s ease-in-out infinite;
 }
 
-/* Soft dreamy blur on edges for containers */
+@keyframes vhs-chroma-flicker {
+  0%, 100% {
+    text-shadow:
+      -2px 0 rgba(255, 40, 70, 0.45),
+      2px 0 rgba(60, 140, 255, 0.45),
+      0 0 15px rgba(140, 100, 255, 0.6),
+      0 0 40px rgba(100, 60, 200, 0.3);
+  }
+  25% {
+    text-shadow:
+      -2.5px 0.5px rgba(255, 40, 70, 0.5),
+      2.5px -0.5px rgba(60, 140, 255, 0.5),
+      0 0 18px rgba(140, 100, 255, 0.65),
+      0 0 45px rgba(100, 60, 200, 0.35);
+  }
+  50% {
+    text-shadow:
+      -1.5px -0.3px rgba(255, 40, 70, 0.4),
+      1.5px 0.3px rgba(60, 140, 255, 0.4),
+      0 0 12px rgba(140, 100, 255, 0.55),
+      0 0 35px rgba(100, 60, 200, 0.25);
+  }
+  75% {
+    text-shadow:
+      -2.2px 0.2px rgba(255, 40, 70, 0.48),
+      2.2px -0.2px rgba(60, 140, 255, 0.48),
+      0 0 16px rgba(140, 100, 255, 0.62),
+      0 0 42px rgba(100, 60, 200, 0.32);
+  }
+}
+
+/* ─── 4b. Soft Focus & Blur on edges — dreamy depth ──────────────────────── */
 .vhs-soft-edge {
   mask-image: radial-gradient(
-    ellipse 90% 85% at center,
-    black 60%,
+    ellipse 85% 80% at center,
+    black 50%,
     transparent 100%
   );
   -webkit-mask-image: radial-gradient(
-    ellipse 90% 85% at center,
-    black 60%,
+    ellipse 85% 80% at center,
+    black 50%,
     transparent 100%
   );
 }
 
-/* VHS tape tracking wobble on specific elements */
+/* Soft focus filter for the entire content area */
+.vhs-dreamy-focus {
+  filter: blur(0.3px) brightness(0.95);
+}
+
+/* ─── 7. Elemental Accent: oversaturated red for accents ─────────────────── */
+.vhs-accent-red {
+  color: #ff3050 !important;
+  text-shadow:
+    0 0 8px rgba(255, 48, 80, 0.7),
+    0 0 20px rgba(255, 30, 60, 0.4),
+    0 0 40px rgba(200, 20, 50, 0.2);
+  filter: saturate(2.5);
+}
+
+.vhs-accent-red-box {
+  border-color: rgba(255, 50, 80, 0.4) !important;
+  box-shadow:
+    0 0 10px rgba(255, 50, 80, 0.25),
+    0 0 30px rgba(255, 30, 60, 0.12),
+    inset 0 0 15px rgba(255, 50, 80, 0.06);
+}
+
+/* ─── VHS tape tracking wobble ───────────────────────────────────────────── */
 @keyframes vhs-tracking {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(0.5px); }
-  50% { transform: translateX(-0.3px); }
-  75% { transform: translateX(0.2px); }
+  0%, 100% { transform: translateX(0) skewX(0deg); }
+  15%      { transform: translateX(0.5px) skewX(0.02deg); }
+  30%      { transform: translateX(-0.4px) skewX(-0.01deg); }
+  50%      { transform: translateX(0.3px) skewX(0.01deg); }
+  70%      { transform: translateX(-0.2px) skewX(-0.02deg); }
+  85%      { transform: translateX(0.4px) skewX(0.01deg); }
 }
 
 /* Bloom pulse for glowing elements */
 @keyframes vhs-bloom-pulse {
   0%, 100% { filter: brightness(1) blur(0px); }
-  50% { filter: brightness(1.15) blur(0.5px); }
+  50%      { filter: brightness(1.2) blur(0.8px); }
+}
+
+/* ─── VHS flicker on the whole page (subtle) ─────────────────────────────── */
+@keyframes vhs-flicker {
+  0%, 100% { opacity: 1; }
+  92%      { opacity: 1; }
+  93%      { opacity: 0.92; }
+  94%      { opacity: 1; }
+  96%      { opacity: 0.96; }
+  97%      { opacity: 1; }
+}
+
+#root {
+  animation: vhs-flicker 3s ease-in-out infinite;
+}
+
+/* ─── Dreamy glow border for interactive elements ────────────────────────── */
+textarea:focus,
+input:focus {
+  box-shadow:
+    0 0 10px rgba(120, 80, 240, 0.3),
+    0 0 30px rgba(100, 60, 220, 0.15),
+    0 0 60px rgba(80, 40, 200, 0.08),
+    inset 0 0 20px rgba(100, 70, 200, 0.06) !important;
+  border-color: rgba(140, 100, 255, 0.5) !important;
+}
+
+/* ─── VHS timestamp style for footer/metadata ────────────────────────────── */
+.vhs-timestamp {
+  font-family: monospace;
+  letter-spacing: 0.15em;
+  text-shadow:
+    0 0 4px rgba(140, 120, 255, 0.5),
+    0 0 10px rgba(100, 80, 200, 0.3);
+  animation: vhs-bloom-pulse 3s ease-in-out infinite;
+}
+
+/* ─── Subtle horizontal distortion wave ──────────────────────────────────── */
+@keyframes vhs-wave {
+  0%, 100% { transform: translateX(0); }
+  25%      { transform: translateX(0.3px); }
+  50%      { transform: translateX(-0.2px); }
+  75%      { transform: translateX(0.15px); }
+}
+
+/* Apply tracking wobble to main content */
+.vhs-wobble {
+  animation: vhs-tracking 2s ease-in-out infinite;
 }
