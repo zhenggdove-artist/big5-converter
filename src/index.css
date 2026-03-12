@@ -15,11 +15,11 @@
 /* ─── 1. Color Grading: cold blue-purple monochrome ──────────────────────── */
 html {
   filter:
-    saturate(0.45)
-    sepia(0.15)
+    saturate(0.55)
+    sepia(0.12)
     hue-rotate(220deg)
     contrast(1.05)
-    brightness(0.88);
+    brightness(0.95);
 }
 
 /* ─── 2. Lighting: low brightness, deep blacks, strong vignette ──────────── */
@@ -155,84 +155,92 @@ body {
     #0b0820 75%,
     #070515 100%
   );
-  color: #c8c0e8;
+  color: #ddd6f5;
   min-height: 100vh;
 }
 
 /* ─── 5. Glow & Bloom ────────────────────────────────────────────────────── */
 
-/* Text glow — dreamy diffused halation */
+/* Text glow — dreamy diffused halation (+50% intensity) */
 .vhs-glow {
   text-shadow:
-    0 0 4px rgba(180, 160, 255, 0.9),
-    0 0 12px rgba(150, 120, 255, 0.7),
-    0 0 28px rgba(120, 90, 240, 0.45),
-    0 0 55px rgba(90, 60, 200, 0.25);
+    0 0 3px rgba(220, 200, 255, 1),
+    0 0 8px rgba(200, 170, 255, 1),
+    0 0 18px rgba(170, 140, 255, 0.85),
+    0 0 35px rgba(140, 100, 240, 0.6),
+    0 0 65px rgba(110, 70, 220, 0.35);
 }
 
-/* Box glow — bloom on containers (self-illuminating borders) */
+/* Box glow — bloom on containers (self-illuminating borders, +50%) */
 .vhs-glow-box {
-  border-color: rgba(140, 110, 255, 0.5) !important;
+  border-color: rgba(170, 145, 255, 0.75) !important;
   box-shadow:
-    0 0 6px rgba(140, 110, 255, 0.4),
-    0 0 18px rgba(120, 80, 240, 0.25),
-    0 0 40px rgba(90, 60, 200, 0.12),
-    inset 0 0 12px rgba(130, 100, 255, 0.1);
+    0 0 4px rgba(180, 150, 255, 0.7),
+    0 0 12px rgba(160, 130, 255, 0.5),
+    0 0 28px rgba(140, 100, 240, 0.3),
+    0 0 50px rgba(110, 70, 220, 0.15),
+    inset 0 0 15px rgba(160, 130, 255, 0.15);
 }
 
 /* Intense bloom for focused/active elements */
 .vhs-bloom-intense {
   box-shadow:
-    0 0 8px rgba(160, 120, 255, 0.5),
-    0 0 25px rgba(130, 90, 240, 0.35),
-    0 0 60px rgba(100, 60, 220, 0.18),
-    inset 0 0 20px rgba(140, 100, 255, 0.1);
+    0 0 6px rgba(190, 160, 255, 0.75),
+    0 0 18px rgba(170, 130, 255, 0.5),
+    0 0 40px rgba(140, 100, 240, 0.3),
+    0 0 70px rgba(110, 70, 220, 0.18),
+    inset 0 0 25px rgba(160, 130, 255, 0.15);
 }
 
 /* ─── 6. Chromatic Aberration on headings ─────────────────────────────────── */
 .vhs-chroma {
   text-shadow:
-    -2.5px 0 rgba(255, 50, 80, 0.6),
-    2.5px 0 rgba(80, 160, 255, 0.6),
-    0 0 10px rgba(200, 180, 255, 0.9),
-    0 0 25px rgba(160, 130, 255, 0.6),
-    0 0 50px rgba(120, 80, 240, 0.35),
-    0 0 80px rgba(90, 50, 200, 0.2);
+    -3px 0 rgba(255, 60, 90, 0.8),
+    3px 0 rgba(90, 180, 255, 0.8),
+    0 0 6px rgba(230, 220, 255, 1),
+    0 0 16px rgba(210, 190, 255, 1),
+    0 0 35px rgba(180, 150, 255, 0.7),
+    0 0 65px rgba(140, 100, 240, 0.45),
+    0 0 100px rgba(110, 70, 220, 0.25);
   animation: vhs-chroma-flicker 4s ease-in-out infinite;
 }
 
 @keyframes vhs-chroma-flicker {
   0%, 100% {
     text-shadow:
-      -2.5px 0 rgba(255, 50, 80, 0.6),
-      2.5px 0 rgba(80, 160, 255, 0.6),
-      0 0 10px rgba(200, 180, 255, 0.9),
-      0 0 25px rgba(160, 130, 255, 0.6),
-      0 0 50px rgba(120, 80, 240, 0.35);
+      -3px 0 rgba(255, 60, 90, 0.8),
+      3px 0 rgba(90, 180, 255, 0.8),
+      0 0 6px rgba(230, 220, 255, 1),
+      0 0 16px rgba(210, 190, 255, 1),
+      0 0 35px rgba(180, 150, 255, 0.7),
+      0 0 65px rgba(140, 100, 240, 0.45);
   }
   25% {
     text-shadow:
-      -3px 0.5px rgba(255, 50, 80, 0.7),
-      3px -0.5px rgba(80, 160, 255, 0.7),
-      0 0 12px rgba(200, 180, 255, 1),
-      0 0 30px rgba(160, 130, 255, 0.65),
-      0 0 60px rgba(120, 80, 240, 0.4);
+      -3.5px 0.5px rgba(255, 60, 90, 0.9),
+      3.5px -0.5px rgba(90, 180, 255, 0.9),
+      0 0 8px rgba(230, 220, 255, 1),
+      0 0 20px rgba(210, 190, 255, 1),
+      0 0 40px rgba(180, 150, 255, 0.75),
+      0 0 75px rgba(140, 100, 240, 0.5);
   }
   50% {
     text-shadow:
-      -2px -0.3px rgba(255, 50, 80, 0.55),
-      2px 0.3px rgba(80, 160, 255, 0.55),
-      0 0 8px rgba(200, 180, 255, 0.8),
-      0 0 22px rgba(160, 130, 255, 0.55),
-      0 0 45px rgba(120, 80, 240, 0.3);
+      -2.5px -0.3px rgba(255, 60, 90, 0.7),
+      2.5px 0.3px rgba(90, 180, 255, 0.7),
+      0 0 5px rgba(230, 220, 255, 0.9),
+      0 0 14px rgba(210, 190, 255, 0.9),
+      0 0 30px rgba(180, 150, 255, 0.6),
+      0 0 58px rgba(140, 100, 240, 0.4);
   }
   75% {
     text-shadow:
-      -2.8px 0.2px rgba(255, 50, 80, 0.65),
-      2.8px -0.2px rgba(80, 160, 255, 0.65),
-      0 0 11px rgba(200, 180, 255, 0.95),
-      0 0 28px rgba(160, 130, 255, 0.6),
-      0 0 55px rgba(120, 80, 240, 0.38);
+      -3.2px 0.2px rgba(255, 60, 90, 0.85),
+      3.2px -0.2px rgba(90, 180, 255, 0.85),
+      0 0 7px rgba(230, 220, 255, 1),
+      0 0 18px rgba(210, 190, 255, 1),
+      0 0 38px rgba(180, 150, 255, 0.72),
+      0 0 70px rgba(140, 100, 240, 0.48);
   }
 }
 
@@ -303,32 +311,35 @@ body {
   animation: vhs-flicker 3s ease-in-out infinite;
 }
 
-/* ─── Self-illuminating borders for ALL bordered elements ────────────────── */
+/* ─── Self-illuminating borders for ALL bordered elements (+50%) ──────────── */
 [class*="border-indigo"] {
-  border-color: rgba(140, 110, 255, 0.55) !important;
+  border-color: rgba(180, 155, 255, 0.8) !important;
   box-shadow:
-    0 0 4px rgba(140, 110, 255, 0.3),
-    0 0 12px rgba(120, 80, 240, 0.15);
+    0 0 4px rgba(180, 155, 255, 0.55),
+    0 0 12px rgba(160, 130, 255, 0.35),
+    0 0 24px rgba(140, 100, 240, 0.18);
 }
 
-/* ─── Dreamy glow border for interactive elements ────────────────────────── */
+/* ─── Dreamy glow border for interactive elements (+50%) ─────────────────── */
 textarea,
 input {
-  border-color: rgba(140, 110, 255, 0.45) !important;
+  border-color: rgba(180, 155, 255, 0.7) !important;
   box-shadow:
-    0 0 5px rgba(140, 110, 255, 0.25),
-    0 0 15px rgba(120, 80, 240, 0.1),
-    inset 0 0 10px rgba(100, 70, 200, 0.05) !important;
+    0 0 4px rgba(180, 155, 255, 0.5),
+    0 0 12px rgba(160, 130, 255, 0.3),
+    0 0 25px rgba(140, 100, 240, 0.15),
+    inset 0 0 12px rgba(150, 120, 255, 0.08) !important;
 }
 
 textarea:focus,
 input:focus {
   box-shadow:
-    0 0 8px rgba(160, 130, 255, 0.5),
-    0 0 22px rgba(130, 90, 240, 0.3),
-    0 0 45px rgba(100, 60, 220, 0.15),
-    inset 0 0 15px rgba(130, 100, 255, 0.08) !important;
-  border-color: rgba(170, 140, 255, 0.7) !important;
+    0 0 6px rgba(200, 180, 255, 0.7),
+    0 0 16px rgba(180, 150, 255, 0.5),
+    0 0 35px rgba(150, 110, 240, 0.3),
+    0 0 60px rgba(120, 80, 220, 0.15),
+    inset 0 0 18px rgba(170, 140, 255, 0.12) !important;
+  border-color: rgba(200, 175, 255, 0.85) !important;
 }
 
 /* ─── VHS timestamp style for footer/metadata ────────────────────────────── */
@@ -336,8 +347,9 @@ input:focus {
   font-family: monospace;
   letter-spacing: 0.15em;
   text-shadow:
-    0 0 4px rgba(140, 120, 255, 0.5),
-    0 0 10px rgba(100, 80, 200, 0.3);
+    0 0 3px rgba(200, 180, 255, 0.9),
+    0 0 8px rgba(170, 150, 255, 0.7),
+    0 0 18px rgba(140, 110, 240, 0.4);
   animation: vhs-bloom-pulse 3s ease-in-out infinite;
 }
 
