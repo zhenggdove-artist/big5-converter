@@ -50,7 +50,7 @@ function CodeBlock({ code, char, showAnnotation }: CodeEntry & { showAnnotation:
   return (
     <div className="flex flex-col items-center gap-1">
       <div
-        className="border border-indigo-500/40 font-mono rounded overflow-hidden"
+        className="border border-indigo-400/60 font-mono rounded overflow-hidden"
         style={{
           display: 'grid',
           gridTemplateColumns: '1fr 0.65fr 1fr',
@@ -58,40 +58,40 @@ function CodeBlock({ code, char, showAnnotation }: CodeEntry & { showAnnotation:
           width: '3.25rem',
           height: '2.75rem',
           background: 'rgba(20, 15, 50, 0.7)',
-          boxShadow: '0 0 8px rgba(100, 70, 200, 0.15), inset 0 0 6px rgba(80, 60, 180, 0.1)',
+          boxShadow: '0 0 6px rgba(140, 110, 255, 0.35), 0 0 16px rgba(120, 80, 240, 0.15), inset 0 0 8px rgba(120, 90, 240, 0.1)',
         }}
       >
         {/* 左欄：code[0]，span 2 rows */}
         <span
           style={{ gridColumn: '1', gridRow: '1 / span 2' }}
-          className="flex items-center justify-center border-r border-indigo-500/30 text-indigo-300 font-bold text-sm leading-none"
+          className="flex items-center justify-center border-r border-indigo-400/50 text-indigo-200 font-bold text-sm leading-none vhs-glow"
         >
           {code[0]}
         </span>
         {/* 中欄上：code[1] */}
         <span
           style={{ gridColumn: '2', gridRow: '1', fontSize: '0.6rem' }}
-          className="flex items-center justify-center border-b border-indigo-500/20 text-purple-400/80 leading-none"
+          className="flex items-center justify-center border-b border-indigo-400/40 text-purple-300 leading-none"
         >
           {code[1]}
         </span>
         {/* 右欄：code[3]，span 2 rows */}
         <span
           style={{ gridColumn: '3', gridRow: '1 / span 2' }}
-          className="flex items-center justify-center border-l border-indigo-500/30 text-indigo-300 font-bold text-sm leading-none"
+          className="flex items-center justify-center border-l border-indigo-400/50 text-indigo-200 font-bold text-sm leading-none vhs-glow"
         >
           {code[3]}
         </span>
         {/* 中欄下：code[2] */}
         <span
           style={{ gridColumn: '2', gridRow: '2', fontSize: '0.6rem' }}
-          className="flex items-center justify-center text-purple-400/80 leading-none"
+          className="flex items-center justify-center text-purple-300 leading-none"
         >
           {code[2]}
         </span>
       </div>
       {showAnnotation && (
-        <span className="text-xs text-purple-400/70 leading-none">{char}</span>
+        <span className="text-xs text-purple-300/90 leading-none vhs-glow">{char}</span>
       )}
     </div>
   );
@@ -207,14 +207,14 @@ function ReverseLookup() {
         </div>
 
         {/* 箭頭 */}
-        <span className="text-indigo-500/60 text-2xl select-none vhs-glow">→</span>
+        <span className="text-indigo-300 text-2xl select-none vhs-glow">→</span>
 
         {/* 查找結果 */}
         <div className="flex flex-col items-center gap-2">
           <div
             className={`w-20 h-20 border-2 rounded-xl flex items-center justify-center transition-all ${
               isComplete && resultChar
-                ? 'border-indigo-500/50 vhs-glow-box'
+                ? 'border-indigo-400/60 vhs-glow-box'
                 : isComplete
                 ? 'border-red-500/30 bg-red-900/20'
                 : 'border-indigo-500/20'
@@ -228,7 +228,7 @@ function ReverseLookup() {
             }}
           >
             {isComplete && resultChar ? (
-              <span className="text-4xl text-indigo-200 leading-none vhs-glow">{resultChar}</span>
+              <span className="text-4xl text-indigo-100 leading-none vhs-glow">{resultChar}</span>
             ) : isComplete ? (
               <span className="text-sm text-red-400/80 text-center px-1">查無此碼</span>
             ) : (
@@ -321,7 +321,7 @@ export default function App() {
           >
             <label
               htmlFor="input"
-              className="text-sm font-medium text-indigo-400/70 uppercase tracking-wider ml-1"
+              className="text-sm font-medium text-indigo-300 uppercase tracking-wider vhs-glow ml-1"
             >
               Input (Traditional Chinese)
             </label>
@@ -356,7 +356,7 @@ export default function App() {
             <div className="flex items-center justify-between ml-1">
               <label
                 htmlFor="output"
-                className="text-sm font-medium text-indigo-400/70 uppercase tracking-wider"
+                className="text-sm font-medium text-indigo-300 uppercase tracking-wider vhs-glow"
               >
                 Output (Big5 Hex)
               </label>
@@ -442,9 +442,9 @@ export default function App() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.25 }}
-          className="mt-10 border-t border-indigo-500/20 pt-8"
+          className="mt-10 border-t border-indigo-400/40 pt-8"
         >
-          <h2 className="text-center text-sm font-medium text-indigo-400/60 uppercase tracking-wider mb-6 flex items-center justify-center gap-2">
+          <h2 className="text-center text-sm font-medium text-indigo-300 uppercase tracking-wider mb-6 flex items-center justify-center gap-2 vhs-glow">
             <Search className="w-4 h-4" />
             反向查找 Big5 → 中文
           </h2>
